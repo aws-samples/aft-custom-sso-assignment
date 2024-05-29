@@ -1,0 +1,17 @@
+{
+    "LABEL": {
+      "name": "PR Title Incorrect",
+      "color": "EEEEEE"
+    },
+    "CHECKS": {
+      "prefixes": ["new-customization: PLAT-", "customization-update: PLAT-"],
+      "regexp": "docs\\(v[0-9]\\): ",
+      "regexpFlags": "i",
+      "ignoreLabels" : ["dont-check-PRs-with-this-label", "meta"]
+    },
+    "MESSAGES": {
+      "success": "PR Title found as per naming standards.",
+      "failure": "PR Title NOT as per naming standards. Example - new-customization: PLAT-XXXX, OR customization-update: PLAT-XXXX",
+      "notice": ""
+    }
+  }

@@ -1,0 +1,37 @@
+name: PR Compliance and Labels
+on:
+  pull_request:
+    types: [opened, edited, assigned, review_requested, ready_for_review]  
+
+jobs:
+
+  check-pr-compliance:
+    name: Check PR Title and Body
+    runs-on: ubuntu-latest
+    steps:
+      - uses: thehanimo/pr-title-checker@1d8cd483a2b73118406a187f54dca8a9415f1375
+        name: Check PR Title
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pass_on_octokit_error: false
+          configuration_path: .github/pr-title-checker-config.json
+
+      - name: Check PR Body
+        uses: JJ/github-pr-contains-action@e540fac0002caa995ae8cf2285b899775fab7fe1
+        with:
+          github-token: ${{github.token}}
+          bodyContains: 'PLAT-'
+
+  pr-labeler:
+    name: Create PR Label
+    needs: [check-pr-compliance]
+    permissions:
+    #checkov:skip=CKV2_GHA_1:Permissions are required here 
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: TimonVS/pr-labeler-action@506f1ec19ca600842057ce5e242cc08de33dd869
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/pr-labeler.yml       

@@ -1,0 +1,62 @@
+name: TF Code Scans(fmt/validate/tfsec/checkov)
+
+on:
+  push:
+    branches:
+      - 'new-customization/*'
+      - 'customization-update/*'      
+
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+  
+env:
+  CODE_SRC_DIR: "."
+  TF_SETUP_DIR: "tf-setup-temp"
+  SCRIPT_DIR: "./templates/scripts"
+  TF_VERSION: "1.5.2"
+  ENVIRONMENT: "production"
+  SKIPVALIDATIONFAILURE: "N"
+  ENABLE_TFVALIDATE: "Y"
+  ENABLE_TFFORMAT: "Y"
+  ENABLE_TFCHECKOV: "Y"
+  ENABLE_TFSEC: "Y"
+  TFSEC_VERSION: "v1.28.1"
+
+jobs:
+  IaC-Code-Checks-Scans:
+    name: IaC Code Scans
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      security-events: write   
+    steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@b140ab7b246475139f89894ebae4ba00bd5b374e
+        with:
+          role-to-assume: arn:aws:iam::211055020075:role/acme-github-oidc-role
+          role-session-name: acme-gh-aws-oidc
+          aws-region: us-west-2          
+      - name: Checkout Branch development
+        uses: actions/checkout@b32f140b0c872d58512e0a66172253c302617b90          
+      - name: End to End TF security Scans (tfsec/checkov) and Code Checks (fmt/validate)
+        uses: aws-actions/aws-codebuild-run-build@57a2fded28c45ca9e7b937f5eedb7bf9a20f6811 
+        with:
+          project-name: codebuild-aft-account-provisioning-customizations
+          buildspec-override: './templates/buildspecs/iac_buildspec.yaml' 
+          disable-source-override: true
+          env-vars-for-codebuild: |
+            SCRIPT_DIR,
+            CODE_SRC_DIR,
+            TF_VERSION,
+            ENVIRONMENT,
+            SKIPVALIDATIONFAILURE,
+            ENABLE_TFVALIDATE,
+            ENABLE_TFFORMAT,
+            ENABLE_TFCHECKOV,
+            ENABLE_TFSEC,
+            TFSEC_VERSION,
+            TF_SETUP_DIR

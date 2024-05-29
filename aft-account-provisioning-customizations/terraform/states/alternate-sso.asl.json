@@ -1,0 +1,56 @@
+{
+  "Comment": "AFT Alternate SSO Customizations",
+  "StartAt": "extract-alternate-sso",
+  "States": {
+    "extract-alternate-sso": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${data_aft_alternate_sso_extract_lambda}:$LATEST",
+        "Payload": {
+          "job_name.$": "$$.Execution.Name",
+          "payload.$": "$",
+          "action": "extract"
+        }
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "add-wait-time",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "fail"
+        }
+      ],
+      "ResultSelector": {
+        "job_name.$": "$$.Execution.Name",
+        "payload.$": "$.Payload",
+        "action": "validate"
+      }
+    },
+    "fail": {
+      "Type": "Fail"
+    },
+    "add-wait-time": {
+      "Type": "Wait",
+      "Seconds": 10,
+      "Next": "success",
+      "Comment": "add wait time to avoid throttle"
+    },
+    "success": {
+      "Type": "Succeed"
+    }
+  }
+}
