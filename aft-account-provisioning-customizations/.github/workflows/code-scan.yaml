@@ -37,7 +37,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@b140ab7b246475139f89894ebae4ba00bd5b374e
         with:
-          role-to-assume: arn:aws:iam::211055020075:role/acme-github-oidc-role
+          role-to-assume: arn:aws:iam::xxxxxxxxxxx:role/acme-github-oidc-role
           role-session-name: acme-gh-aws-oidc
           aws-region: us-west-2          
       - name: Checkout Branch development
