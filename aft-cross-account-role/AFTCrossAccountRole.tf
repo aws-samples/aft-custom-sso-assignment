@@ -1,14 +1,14 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
+      source = "hashicorp/aws"
+      version = "6.8.0"
     }
   }
 }
 
 provider "aws" {
-  region = "XXXXXXX" # Your AWS Region
+  region = "" # Your AWS Region
 }
 
 resource "aws_iam_role" "AFTCrossAccountRole" {
@@ -21,7 +21,7 @@ resource "aws_iam_role" "AFTCrossAccountRole" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          AWS = "XXXXXXXXXXXXX" # AFT Management Account ID
+          AWS = "230253882749" # AFT Management Account ID
         }
       }
     ]
@@ -37,11 +37,11 @@ resource "aws_iam_role_policy" "account_assignment_policy" {
     Statement = [
       {
         Action = [
-          "organizations:CreateAccountAssignment",
-          "organizations:DescribeAccountAssignmentCreationStatus"
+          "sso:CreateAccountAssignment",
+          "sso:DescribeAccountAssignmentCreationStatus"
         ]
         Effect = "Allow"
-        Resource = "arn:aws:organizations::XXXXXXXXXXXXX:organization/o-xxxxxxxxxxx" # Control Tower Account ID
+        Resource = "arn:aws:organizations::008732538448:organization/o-13333333333" # Control Tower Account ID
       }
     ]
   })
