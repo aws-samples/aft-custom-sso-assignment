@@ -21,7 +21,7 @@ resource "aws_iam_role" "AFTCrossAccountRole" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          AWS = "230253882749" # AFT Management Account ID
+          AWS = "xxxxxxxxxxxx" # AFT Management Account ID
         }
       }
     ]
@@ -41,7 +41,7 @@ resource "aws_iam_role_policy" "account_assignment_policy" {
           "sso:DescribeAccountAssignmentCreationStatus"
         ]
         Effect = "Allow"
-        Resource = "arn:aws:organizations::008732538448:organization/o-13333333333" # Control Tower Account ID
+        Resource = "arn:aws:organizations::xxxxxxxxxxxx:organization/o-xxxxxxxxxxx" # Control Tower Account ID
       }
     ]
   })
