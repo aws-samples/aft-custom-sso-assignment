@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "6.8.0"
     }
   }
@@ -25,7 +25,7 @@ resource "aws_iam_role" "AFTCrossAccountRole" {
         }
       }
     ]
-  })  
+  })
 }
 
 resource "aws_iam_role_policy" "account_assignment_policy" {
@@ -40,7 +40,7 @@ resource "aws_iam_role_policy" "account_assignment_policy" {
           "sso:CreateAccountAssignment",
           "sso:DescribeAccountAssignmentCreationStatus"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "arn:aws:organizations::xxxxxxxxxxxx:organization/o-xxxxxxxxxxx" # Control Tower Account ID
       }
     ]

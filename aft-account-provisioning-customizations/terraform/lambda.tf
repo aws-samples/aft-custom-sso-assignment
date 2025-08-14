@@ -65,7 +65,7 @@ resource "aws_lambda_function" "aft_alternate_sso_extract_lambda" {
   }
   environment {
     variables = {
-      REGION              = data.aws_region.aft_management_region.name
+      REGION              = data.aws_region.aft_management_region.id
       CROSS_ACC_ROLE_NAME = var.aft_cross_account_role_name
       AFT_CT_ACCOUNT      = var.aft_ct_account_id
     }
@@ -73,7 +73,6 @@ resource "aws_lambda_function" "aft_alternate_sso_extract_lambda" {
   tracing_config {
     mode = "Active"
   }
-  reserved_concurrent_executions = 1
 }
 
 # Update SSO Lambda function CloudWatch Integration

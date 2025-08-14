@@ -8,9 +8,10 @@ resource "aws_iam_role" "aft_alternate_sso_extract_lambda_role" {
 
 # Update Alternate SSO Lambda Role Policy
 
-resource "aws_iam_role_policy_attachment" "assume_policy_attach" {
-  role       = aws_iam_role.aft_alternate_sso_extract_lambda_role.name
-  policy_arn = data.aws_iam_policy_document.lambda_assume_policy.json
+resource "aws_iam_role_policy" "lambda_assume_policy" {
+  name   = "lambda-assume-policy"
+  role   = aws_iam_role.aft_alternate_sso_extract_lambda_role.id
+  policy = data.aws_iam_policy_document.lambda_assume_policy.json
 }
 
 
@@ -35,7 +36,7 @@ resource "aws_iam_role_policy" "aft_alternate_sso_state_role_policy" {
   role = aws_iam_role.aft_alternate_sso_state_role.id
 
   policy = templatefile("${path.module}/iam/role-policies/state-aft-alternate-sso-role-policy.tpl", {
-    data_aws_region     = data.aws_region.aft_management_region.name
+    data_aws_region     = data.aws_region.aft_management_region.id
     data_aws_account_id = data.aws_caller_identity.aft_management_id.account_id
   })
 }

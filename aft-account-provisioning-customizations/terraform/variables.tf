@@ -21,21 +21,18 @@ variable "default_tags" {
 
 variable "private1_subnet_id" {
   type        = string
-  description = "Private Subnet 1"
-  default     = "subnet-XXXXXXXXXXXXXX"
+  description = "Private Subnet 1 to deploy Lambda"
 }
 
 variable "private2_subnet_id" {
   type        = string
-  description = "Private Subnet 2"
-  default     = "subnet-XXXXXXXXXXXXXX"
+  description = "Private Subnet 2 to deploy Lambda"
 }
 
 
 variable "private_sg_id" {
   type        = string
   description = "Private Subnet Security Group"
-  default     = "sg-XXXXXXXXXXXXXX"
 }
 
 variable "aft_cross_account_role_name" {
@@ -46,7 +43,6 @@ variable "aft_cross_account_role_name" {
 
 variable "aft_ct_account_id" {
   type        = string
-  description = "Private Subnet Security Group"
-  default     = "XXXXXXXXXXXXXX"
+  description = "Control Tower Account ID"
 }
 
